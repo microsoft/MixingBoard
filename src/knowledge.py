@@ -168,8 +168,7 @@ def pick_top(score_v, crit=0.1):
     return picked
 
 
-
-if __name__ == "__main__":
+def play_kb():
     kb = KnowledgeBase()
     while True:
         print('\n(empty query to exit)')
@@ -180,3 +179,7 @@ if __name__ == "__main__":
         for url, snippet in url_snippets:
             print('\nURL:\t%s'%url)
             print('TXT:\t%s'%snippet)
+
+
+if __name__ == "__main__":
+    play_kb()

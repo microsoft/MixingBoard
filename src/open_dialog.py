@@ -158,7 +158,7 @@ class DialoGPT:
         return np.exp(logP_cxt)
 
 
-    def predict(self, context, beam=10, branch=2, verbose=False):
+    def predict(self, context, beam=10, verbose=False):
         # return n hypotheses given context, in parallel
         # context is str
         way = self.way
@@ -180,7 +180,7 @@ class DialoGPT:
             logits = predictions[:, -1, :]              # only care the last step. [n_hyp, vocab]
             prob = F.softmax(logits, dim=-1)
             logP = torch.log(prob)
-            picked_tokens = pick_tokens(prob, branch)
+            picked_tokens = pick_tokens(prob)
 
             cand = []
             #tokens_np = (tokens.cpu() if self.use_cuda else tokens).detach().numpy()
@@ -190,9 +190,10 @@ class DialoGPT:
                     _sum_logP = sum_logP[i] + logP[i, ix].item()
                     cand.append((_sum_logP, i, j))
 
+            if not cand:
+                break
             cand = sorted(cand, reverse=True)
             cand = cand[:min(len(cand), beam)]
-                
             sum_logP = []
             cur = []
             nxt = []
@@ -212,6 +213,8 @@ class DialoGPT:
                 if len(cur) == beam:
                     break
             
+            if not cur:
+                break
             tokens = torch.cat([torch.cat(cur, dim=0), torch.cat(nxt, dim=0).unsqueeze(-1)], dim=-1)
 
         finished = sorted(finished, reverse=True)
@@ -220,13 +223,12 @@ class DialoGPT:
             prob = np.exp(_sum_logP/len(seq))
             hyp = self.tokenizer.decode(seq).strip()
             ret.append((way, prob, hyp))
-            if len(ret) == branch:
+            if len(ret) == beam:
                 break
         return sorted(ret, reverse=True)
 
 
-
-if __name__ == "__main__":
+def play_dpt():
     dialogpt = DialoGPT()
     while True:
         print('\n(empty query to exit)')
@@ -236,3 +238,7 @@ if __name__ == "__main__":
         ret = dialogpt.predict(cxt)
         for way, prob, hyp in ret:
             print('%s %.3f\t%s'%(way, prob, hyp))
+
+            
+if __name__ == "__main__":
+    play_dpt()
