@@ -229,7 +229,10 @@ class DialoGPT:
 if __name__ == "__main__":
     dialogpt = DialoGPT()
     while True:
-        cxt = input('\nCONTEXT:\t')
+        print('\n(empty query to exit)')
+        cxt = input('CONTEXT:\t')
+        if not cxt:
+            break
         ret = dialogpt.predict(cxt)
         for way, prob, hyp in ret:
             print('%s %.3f\t%s'%(way, prob, hyp))
