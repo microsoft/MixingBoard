@@ -2,6 +2,13 @@
 
 # News
 
+# Setup
+
+## Package installation
+## API accounts
+### Bing Search
+### Text-to-Speech
+
 # Modules
 
 ## Knowledge passage retrieval
@@ -20,6 +27,18 @@ TXT:    Deep Learning is Large Neural Networks. Andrew Ng from Coursera and Chie
 
 URL:    https://www.forbes.com/sites/bernardmarr/2018/10/01/what-is-deep-learning-ai-a-simple-guide-with-8-practical-examples/
 TXT:    Since deep-learning algorithms require a ton of data to learn from, this increase in data creation is one reason that deep learning capabilities have grown in recent years.
+```
+
+## Open-ended dialogue generation
+We use [DialoGPT](https://github.com/microsoft/DialoGPT) as an example.
+```
+>>> python src/open_dialog.py
+CONTEXT:        Does money buy happiness?
+```
+E.g. the above command calls DialoGPT model and returns the following results
+```
+DPT 1.041       Depends on your definition of happiness.
+DPT 1.041       Depends on how much money you have.
 ```
 
 # Contributing
