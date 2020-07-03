@@ -14,8 +14,8 @@
 ## Knowledge passage retrieval
 We use the following unstructured free-text sources to retrieve relevant knowledge passage: search engine, specialized websites (e.g. wikipedia), and user provided document.
 ```
->>> python src/knowledge.py
->>> QUERY:  what is deep learning?
+python src/knowledge.py
+QUERY:  what is deep learning?
 ```
 E.g. the above command calls Bing search API and returns the following results
 ```
@@ -32,7 +32,7 @@ TXT:    Since deep-learning algorithms require a ton of data to learn from, this
 ## Open-ended dialogue generation
 We use [DialoGPT](https://github.com/microsoft/DialoGPT) as an example.
 ```
->>> python src/open_dialog.py
+python src/open_dialog.py
 CONTEXT:        What's your dream?
 ```
 E.g. the above command calls DialoGPT model and returns the following results
@@ -44,7 +44,7 @@ DPT 1.007       First one is to be a professional footballer. Second one is to b
 
 ## Machine reading comprehension
 ```
->>> python src/mrc.py
+python src/mrc.py
 QUERY:          Who is Jeffrey Hinton?
 PASSAGE:        Geoffrey Everest Hinton CC FRS FRSC is an English Canadian cognitive psychologist and computer scientist, most noted for his work on artificial neural networks. Since 2013 he divides his time working for Google and the University of Toronto. In 2017, he cofounded and became the Chief Scientific Advisor of the Vector Institute in Toronto.
 ```
@@ -52,6 +52,18 @@ E.g. the above command calls [BiDAF](https://allenai.github.io/bi-att-flow/) mod
 ```
 Bidaf 0.352     an English Canadian cognitive psychologist and computer scientist
 ```
+
+## Text-to-speech
+```
+python src/tts.py
+TXT:    Hello there, welcome to the Mixing Board repo!
+```
+E.g. the above command calls [Microsoft Azure Text-to-Speech API](https://azure.microsoft.com/en-us/services/cognitive-services/text-to-speech/), saves and plays the audio.
+```
+audio saved to voice/hellotherewelcometothemixingboardrepo_en-US-JessaNeural.wav
+```
+check out the example [generated audio file](media/hellotherewelcometothemixingboardrepo_en-US-JessaNeural.wav)
+
 
 # Contributing
 
