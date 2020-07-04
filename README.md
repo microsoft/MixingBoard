@@ -73,13 +73,13 @@ python src/ranker.py
 Following are some examples of the the above command.
 ```
 TXT:    This is a normal sentence.
-info 0.1619 rep -0.0000
+rep -0.0000 info 0.1619 score 0.1619
 
 TXT:    This is a repetive and repetive sentence.
-info 0.2518 rep -0.1429
+rep -0.1429 info 0.2518 score 0.1089
 
 TXT:    This is a informative sentence from the MixingBoard GitHub repo.
-info 0.4416 rep -0.0000
+rep -0.0000 info 0.4416 score 0.4416
 ```
 
 # Dialog Demo

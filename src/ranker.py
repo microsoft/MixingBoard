@@ -83,17 +83,50 @@ class ScorerInfo:
         return scores
 
 
+class Ranker:
+
+    def __init__(self, scorer_fwd=None, scorer_rvs=None, scorer_style=None):
+        self.scorer_fwd = scorer_fwd
+        self.scorer_rvs = scorer_rvs
+        self.scorer_style = scorer_style
+        
+        self.scorer_rep = ScorerRepetition()
+        self.scorer_info = ScorerInfo()
+        self.scorer_info.load()
+
+
+    def predict(self, cxt, hyps):
+        info = self.scorer_info.predict(hyps)
+        rep = self.scorer_rep.predict(hyps)
+        if self.scorer_fwd is not None:
+            prob_fwd = self.scorer_fwd.tf_prob(cxt, hyps)
+        if self.scorer_rvs is not None:
+            prob_rvs = self.scorer_rvs.rvs_prob(cxt, hyps)
+
+        scored = []
+        for i, hyp in enumerate(hyps):
+            d = {
+                'rep': rep[i],
+                'info': info[i],
+                }
+            if self.scorer_fwd is not None:
+                d['fwd'] = float(prob_fwd[i])
+            if self.scorer_rvs is not None:
+                d['rvs'] = float(prob_rvs[i])
+            score = sum([d[k] for k in d])
+            d['score'] = score + np.random.random() * 1e-8              # to avoid exactly the same score
+            scored.append(d)
+        return scored
+
+
 def play_ranker():
-    scorer_rep = ScorerRepetition()
-    scorer_info = ScorerInfo()
-    scorer_info.load()
+    ranker = Ranker()
     while True:
         txt = input('\nTXT:\t')
         if not txt:
             break
-        info = scorer_info.predict([txt])[0]
-        rep = scorer_rep.predict([txt])[0]
-        print('info %.4f rep %.4f'%(info, rep))
+        scored = ranker.predict('', [txt])[0]
+        print(' '.join(['%s %.4f'%(k, scored[k]) for k in scored]))
 
 
 if __name__ == "__main__":
