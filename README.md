@@ -65,6 +65,32 @@ audio saved to voice/hellotherewelcometothemixingboardrepo_en-US-JessaNeural.wav
 check out the example [generated audio file](media/hellotherewelcometothemixingboardrepo_en-US-JessaNeural.wav)
 
 
+## Ranking
+We consider multiple metrics to rank the hypotheses, including 1) forward and reverse generation likelihood, 2) repetition penalty, 3) informativeness, and 4) style intensity. 
+```
+python src/ranker.py
+```
+Following are some examples of the the above command.
+```
+TXT:    This is a normal sentence.
+info 0.1619 rep -0.0000
+
+TXT:    This is a repetive and repetive sentence.
+info 0.2518 rep -0.1429
+
+TXT:    This is a informative sentence from the MixingBoard GitHub repo.
+info 0.4416 rep -0.0000
+```
+
+# Dialog Demo
+
+## Comand line interface
+
+## Webpage interface
+
+## RESTful API
+
+
 # Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
