@@ -4,10 +4,27 @@
 
 # Setup
 
-## Package installation
-## API accounts
-### Bing Search
-### Text-to-Speech
+## Packages
+We recommend using [Anaconda](https://www.anaconda.com/) to setup
+Firstly, create an environment with Python 3.6
+```
+conda create -n mixingboard python=3.6
+conda activate mixingboard
+```
+Then, install Python packages with
+```
+sh setup.sh
+```
+
+## API Accounts
+Then, if you prefer to use the web search and text-to-speech functions, please apply the following accounts.
+* **Bing Search API**: open an account and/or try for free on [Azure Cognitive Services](https://azure.microsoft.com/en-us/services/cognitive-services/bing-web-search-api/). Once you obtained the key, please put it in `args/api.tsv`. You can also try other search engine, however we currently only support Bing Search v7.0 in `src/knowledge.py`.
+* **Text-to-Speech**: open an account and/or try for free on [Azure Cognitive Services](https://azure.microsoft.com/en-us/services/cognitive-services/text-to-speech/). Once you obtained the key, please put it in `args/api.tsv`.
+
+
+## `pick_tokens`
+Please implement your own `pick_tokens` function in `src/todo.py`. This function is used to pick tokens for a generation time step given predicted token probability distribution. Many choices are available, e.g. greedy, top-k, top-p, or sampling.
+
 
 # Modules
 

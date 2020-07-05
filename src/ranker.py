@@ -28,7 +28,7 @@ class ScorerInfo:
     def __init__(self):
         fld = 'models/info'
         os.makedirs(fld, exist_ok=True)
-        self.path = fld + '/common.txt'
+        self.path = 'src/common.txt'
     
 
     def load(self):

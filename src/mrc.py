@@ -4,7 +4,7 @@ from allennlp.predictors.predictor import Predictor
 
 class BidafQA:
     def __init__(self):
-        self.model = Predictor.from_path('models/BiDAF/bidaf.tar.gz')
+        self.model = Predictor.from_path('models/BiDAF/bidaf-model-2020.03.19.tar.gz')
 
     def predict(self, query, passage):
         ret = self.model.predict(passage=passage, question=query)

@@ -1,14 +1,12 @@
 #// Copyright (c) Microsoft Corporation.// Licensed under the MIT license. 
 
-import pke, tagme, time
+import pke, time
 import numpy as np
-import pdb, pickle, os, wikipedia, re, json, requests
+import pdb, pickle, os, re, json, requests
 from shared import get_api_key
 
 from azure.cognitiveservices.search.websearch import WebSearchAPI
-from azure.cognitiveservices.search.newssearch import NewsSearchAPI
 from msrest.authentication import CognitiveServicesCredentials
-from azure.cognitiveservices.search.websearch.models import SafeSearch
 
 
 def extract_keyphrase(txt, n_max=5):
@@ -33,7 +31,6 @@ class KnowledgeBase:
     def __init__(self):
         self.fld = 'kb'
         bing_v7_key = get_api_key('bing_v7')[0]
-        self.bing_news_client = NewsSearchAPI(CognitiveServicesCredentials(bing_v7_key))
         self.bing_web_client = WebSearchAPI(CognitiveServicesCredentials(bing_v7_key))
         
 
@@ -43,21 +40,6 @@ class KnowledgeBase:
         return query + ' ' + ' '.join(['"%s"'%w for w in must_include])
 
 
-    def search_bing_news(self, query, site=None, must_include=[]):
-        # call Bing news API (cognative serivices)
-        # https://docs.microsoft.com/en-us/azure/cognitive-services/bing-news-search/news-sdk-python-quickstart
-        url_snippet = []
-        snippets = []
-        news_result = self.bing_news_client.news.search(
-            query=self.build_query(query, site, must_include), 
-            market="en-us", count=10)
-        for news in news_result.value:
-            snippet = news.name + ' . ' + news.description
-            snippets.append(snippet)
-            url_snippet.append((news.url, snippet))
-        return url_snippet
-
-    
     def search_bing_web(self, query, site=None, must_include=[]):
         # https://docs.microsoft.com/en-us/azure/cognitive-services/bing-web-search/web-sdk-python-quickstart
         ord_url_snippet = []
@@ -73,33 +55,6 @@ class KnowledgeBase:
             snippets.append(data.snippet)
             ord_url_snippet.append((i, data.url, data.snippet))
         return ord_url_snippet
-
-
-    def pick_wiki_snippet(self, query, title):
-        try:
-            page = wikipedia.page(title)
-        except:
-            return None
-        lines = page.content.split('\n')
-        if len(lines) == 0:
-            return False
-        snippets = []
-        qq = set(re.sub(r"[^a-z]", " ", query.lower()).split())
-        for s in lines:
-            s = s.strip('\n').strip()
-            if s.startswith('=='):
-                continue
-            if len(s) > 30:
-                ww = set(re.sub(r"[^a-z]", " ", s.lower()).split())
-                score = len(ww & qq)/len(qq) + len(ww)/10
-                snippets.append((score, s))
-        snippets = sorted(snippets, reverse=True)
-        cat = ''
-        for _, snippet in snippets:
-            cat += snippet
-            if len(cat.split()) > 256:
-                break
-        return cat
 
 
     def rank_passage(self, query, ord_url_snippet, n_max=3):
