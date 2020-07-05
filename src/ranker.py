@@ -94,6 +94,15 @@ class Ranker:
         self.scorer_info = ScorerInfo()
         self.scorer_info.load()
 
+        self.score_names = []
+        if scorer_fwd is not None:
+            self.score_names.append('fwd')
+        if scorer_rvs is not None:
+            self.score_names.append('rvs')
+        self.score_names += ['rep', 'info']
+        if scorer_style is not None:
+            self.score_names.append('style')
+        self.score_names.append('score')
 
     def predict(self, cxt, hyps):
         info = self.scorer_info.predict(hyps)
@@ -102,9 +111,11 @@ class Ranker:
             prob_fwd = self.scorer_fwd.tf_prob(cxt, hyps)
         if self.scorer_rvs is not None:
             prob_rvs = self.scorer_rvs.rvs_prob(cxt, hyps)
+        if self.scorer_style is not None:
+            style = self.scorer_style.predict(hyps)
 
         scored = []
-        for i, hyp in enumerate(hyps):
+        for i in range(len(hyps)):
             d = {
                 'rep': rep[i],
                 'info': info[i],
@@ -113,9 +124,12 @@ class Ranker:
                 d['fwd'] = float(prob_fwd[i])
             if self.scorer_rvs is not None:
                 d['rvs'] = float(prob_rvs[i])
+            if self.scorer_style is not None:
+                d['style'] = float(style[i])
             score = sum([d[k] for k in d])
             d['score'] = score + np.random.random() * 1e-8              # to avoid exactly the same score
             scored.append(d)
+
         return scored
 
 

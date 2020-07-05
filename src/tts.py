@@ -21,13 +21,12 @@ class TextToSpeech:
         os.makedirs(self.fld_out, exist_ok=True)
 
 
-    def get_audio(self, txt, name='en-US-JessaNeural', overwrite=False):
+    def get_audio(self, txt, name='en-US-JessaNeural'):
         # see: https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support
 
         txt_fname = re.sub(r"[^A-Za-z0-9]", "", txt).lower()
+        txt_fname = txt_fname[:min(20, len(txt_fname))]
         path_out = self.fld_out + '/%s_%s.wav'%(txt_fname, name)
-        if (not overwrite) and os.path.exists(path_out):
-            return path_out
 
         lang = '-'.join(name.split('-')[:2])
         xml_body = ElementTree.Element('speak', version='1.0')

@@ -62,8 +62,6 @@ E.g. the above command calls [Microsoft Azure Text-to-Speech API](https://azure.
 ```
 audio saved to voice/hellotherewelcometothemixingboardrepo_en-US-JessaNeural.wav
 ```
-check out the example [generated audio file](media/hellotherewelcometothemixingboardrepo_en-US-JessaNeural.wav)
-
 
 ## Ranking
 We consider multiple metrics to rank the hypotheses, including 1) forward and reverse generation likelihood, 2) repetition penalty, 3) informativeness, and 4) style intensity. 
@@ -84,9 +82,17 @@ rep -0.0000 info 0.4416 score 0.4416
 
 # Dialog Demo
 
-## Comand line interface
-
+## Comand-line interface
+The comand-line interface can be started with the following command.
+```
+python src/demo_dialog.py cmd
+```
 ## Webpage interface
+```
+python src/demo_dialog.py web
+```
+The comand above creates a webpage demo that can be visited by typing `localhost:5000` in your browser. You can interact with the models, and the following screenshot is an example
+![](media/dialog_web_demo.PNG)
 
 ## RESTful API
 

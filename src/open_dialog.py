@@ -27,7 +27,7 @@ class DialoGPT:
         self.model.eval()
 
 
-    def tf_prob(self, context, hyps, use_EOS=True, verbose=False, batch=10, return_np=True):
+    def tf_prob(self, context, hyps, use_EOS=True, batch=10, return_np=True):
         if isinstance(hyps, str):
             hyps = [hyps]
         i0 = 0
@@ -158,7 +158,7 @@ class DialoGPT:
         return np.exp(logP_cxt)
 
 
-    def predict(self, context, beam=10, verbose=False):
+    def predict(self, context, beam=10):
         # return n hypotheses given context, in parallel
         # context is str
         way = self.way
