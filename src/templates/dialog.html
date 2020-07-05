@@ -22,49 +22,25 @@ table {
 * {
   box-sizing: border-box;
 }
-{% if v_verbose > 0 %}
-    tr:nth-child(odd) {background-color: #f0f0f0;}
-{% endif %}
 
-/* Create two equal columns that floats next to each other */
-.column {
-  float: left;
-  width: 50%;
-  padding: 10px;
-}
+tr:nth-child(odd) {background-color: #f0f0f0;}
 
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
 </style>
 </head>
 <body>
 
     
-<!-- /////////////////////////////////////////////////////////////////////// -->
 <h2>Grounded Conversational Demo</h2>
-{% if v_verbose > 0 %}
-version: {{ version }}<br>
-{% endif %}
 
 
-{% if show_hyp %}
 
-<div class="row">
-  <div class="column">
-
-    <!-- /////////////////////////////////////////////////////////////////////// -->
     <h3>Context</h3>
 
     <table border="0" width="100%">
-        {% for speaker, utt, utt_en in history %}
+        {% for speaker, utt in history %}
             <tr>
                 <td><b>{{ speaker }}</b></td>
                 <td>{{ utt }}</td>
-                <td>{{ utt_en }}</td>
             </tr>
         {% endfor %}
     </table>
@@ -72,18 +48,11 @@ version: {{ version }}<br>
   </div>
   <div class="column">      
 
-    <!-- /////////////////////////////////////////////////////////////////////// -->
     <h3>Response</h3>
 
-    {% if v_face > 0 %}
-    <img src="data:image/png;base64,{{ img_code }}" alt="" title="I am a static img, for now." width="200" height="150"><br>
-    {% endif %}
-
-    {% if v_tts > 0 %}
     <audio controls autoplay>
         <source src="data:audio/wav;base64,{{ audio_code }}">
     </audio>
-    {% endif %}
     
     {% for v in notes %}
         {{ v }}<br>
@@ -94,8 +63,8 @@ version: {{ version }}<br>
         {% for s in score_header %}
             <td><b>{{ s }}</b></td>
         {% endfor %}
-        <td><b>Model</b></td>
-        <td><b>Candidate</b></td>
+        <td><b>model</b></td>
+        <td><b>candidate</b></td>
         <td></td>
     </tr>
     {% for score, model, hyp, hyp_en in hyps %}
@@ -110,8 +79,6 @@ version: {{ version }}<br>
     {% endfor %}
     </table>
 
-    <!-- /////////////////////////////////////////////////////////////////////// -->
-    {% if show_kb %}
     <h3>Retrieved Passage:</h3>
     <table border="0" width="100%">
     {% for url_display, url_full, snippet in passages %}
@@ -121,14 +88,8 @@ version: {{ version }}<br>
         </tr>
     {% endfor %}
     </table>
-    {% endif %}
-
-  </div>
-</div>
-{% endif %}
 
 
-<!-- /////////////////////////////////////////////////////////////////////// -->
 <h3>Input</h3>
 <form method="POST">
 <table border="0" width="100%">
@@ -137,41 +98,10 @@ version: {{ version }}<br>
         Message
         <input type='text' name='inp_query' size="60">
     </td>
+</tr>
+<tr>
     <td colspan="2">
-        Keywords
-        <input type='text' name='inp_cstr' value="{{ v_cstr }}" size="20">
-    </td>
-</tr>
-<tr>
-    <td width="25%">
-        <input type="checkbox" name='inp_style' value="{{ v_style }}"> Style 
-    </td>
-    <td width="25%">
-        <input type="checkbox" name='inp_kb' value="{{ v_kb }}"> Knowledge 
-    </td>
-    <td width="25%">
-        <input type="checkbox" name='inp_toxic' value="{{ v_toxic }}"> Toxicity filering 
-    </td>
-    <td width="25%">
-        <input type="checkbox" name='inp_memo' value="{{ v_memo }}"> Memory
-    </td>
-</tr>
-<tr>
-    <td>
-        <input type="checkbox" name='inp_tts' value="{{ v_tts }}"> Speech 
-    </td>
-    <td>
-        <input type="checkbox" name='inp_face' value="{{ v_face }}"> Facial 
-    </td>
-    <td>
-        <input type="checkbox" name='inp_verbose' value="{{ v_verbose }}"> Show details
-    </td>
-    <td>
         <input type="checkbox" name='inp_new' value="{{ v_new }}"> New session 
-    </td>
-    <td>
-    </td>
-    <td>
     </td>
 </tr>
 </table>

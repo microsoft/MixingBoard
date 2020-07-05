@@ -93,16 +93,7 @@ class Ranker:
         self.scorer_rep = ScorerRepetition()
         self.scorer_info = ScorerInfo()
         self.scorer_info.load()
-
-        self.score_names = []
-        if scorer_fwd is not None:
-            self.score_names.append('fwd')
-        if scorer_rvs is not None:
-            self.score_names.append('rvs')
-        self.score_names += ['rep', 'info']
-        if scorer_style is not None:
-            self.score_names.append('style')
-        self.score_names.append('score')
+        
 
     def predict(self, cxt, hyps):
         info = self.scorer_info.predict(hyps)

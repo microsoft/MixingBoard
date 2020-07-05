@@ -99,7 +99,7 @@ The comand above creates a webpage demo that can be visited by typing `localhost
 ```
 python src/demo_dialog.py api
 ```
-Runing the command above on your machine `A` (say its IP address is `IP_address_A`) starts hosting the models on machine `A`. Then, you can call this RESTful API on another machine, say machine `B`, with the following command, using "what is machine learning?" as an example context
+Runing the command above on your machine `A` (say its IP address is `IP_address_A`) starts to host the models on machine `A` with a RESTful API. Then, you can call this API on another machine, say machine `B`, with the following command, using "what is machine learning?" as an example context
 ```
 curl IP_address_A:5000 -d "context=what is machine learning?" -X GET
 ```
@@ -109,8 +109,8 @@ which will returns a json object, in the following format
   "context": "what is machine learning?", 
   "passages": [[
       "https://en.wikipedia.org/wiki/Machine_learning", 
-      "Machine learning (ML) is the study of computer algorithms that improve automatically through experience. It is seen as a subset of artificial intelligence.Machine learning algorithms build a mathematical model based on sample data, known as \"training data\", in order to make predictions or decisions without being explicitly programmed to do so. Machine learning algorithms are used in a wide ...
-    "]], 
+      "Machine learning (ML) is the study of computer algorithms that improve automatically through experience. It is seen as a subset of artificial intelligence.Machine learning algorithms build a mathematical model based on sample data, known as \"training data\", in order to make predictions or decisions without being explicitly programmed to do so. Machine learning algorithms are used in a wide ..."
+    ]], 
   "responses": [
     {
       "rep": -0.0, "info": 0.4280192169639406, "fwd": 0.014708111993968487, "rvs": 0.10698941218944846, "score": 0.5497167508995263, "way": "Bidaf", 
@@ -122,6 +122,10 @@ which will returns a json object, in the following format
       "rep": -0.1428571428571429, "info": 0.22310269295193919, "fwd": 0.1599835902452469, "rvs": 0.21712445686414383, "score": 0.4573535985050974, "way": "DPT", 
       "hyp": "I believe that is a fancy way to put it. Machine learning is a set of algorithms and algorithms are machines."}, 
   ]}
+```
+Besides calling API by `curl`, you can also lanch a webpage demo on machine `B`, but using the backend running on machine `A` with the API, using the following command
+```
+python src/demo_dialog.py web --remote=IP_address_A:5000 --port=5001
 ```
 
 # Contributing
