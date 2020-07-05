@@ -92,7 +92,7 @@ python src/demo_dialog.py cmd
 python src/demo_dialog.py web
 ```
 The comand above creates a webpage demo that can be visited by typing `localhost:5000` in your browser. You can interact with the models, and the following screenshot is an example
-![](media/dialog_web_demo.PNG)
+![](https://github.com/microsoft/MixingBoard/blob/master/fig/dialog_web_demo.PNG)
 
 ## RESTful API
 
