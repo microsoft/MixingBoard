@@ -1,29 +1,29 @@
 # MixingBoard: a Knowledgeable Stylized Integrated Text Generation Platform
 
+We present [MixingBoard](https://arxiv.org/abs/2005.08365), a platform for quickly building demos with a focus on knowledge grounded stylized text generation. We unify existing text generation algorithms in a shared codebase and further adapt earlier algorithms for constrained generation. To borrow advantages from different models, we implement strategies for cross-model integration, from the token probability level to the latent space level. An interface to external knowledge is provided via a module that retrieves on-the-fly relevant knowledge from passages on the web or any document collection. A user interface for local development, remote webpage access, and a RESTful API are provided to make it simple for users to build their own demos.
+
 # News
+* July 6, 2020: MixingBoard repo is released on GitHub.
+* Apr 3, 2020: MixingBoard [paper](https://arxiv.org/abs/2005.08365) is accepted to appear on [ACL 2020](https://acl2020.org/) Demo track.
 
 # Setup
 
-## Packages
 We recommend using [Anaconda](https://www.anaconda.com/) to setup
 Firstly, create an environment with Python 3.6
 ```
 conda create -n mixingboard python=3.6
 conda activate mixingboard
 ```
-Then, install Python packages with
+Then, install Python packages and download pretrained models with
 ```
 sh setup.sh
 ```
 
-## API Accounts
 Then, if you prefer to use the web search and text-to-speech functions, please apply the following accounts.
 * **Bing Search API**: open an account and/or try for free on [Azure Cognitive Services](https://azure.microsoft.com/en-us/services/cognitive-services/bing-web-search-api/). Once you obtained the key, please put it in `args/api.tsv`. You can also try other search engine, however we currently only support Bing Search v7.0 in `src/knowledge.py`.
 * **Text-to-Speech**: open an account and/or try for free on [Azure Cognitive Services](https://azure.microsoft.com/en-us/services/cognitive-services/text-to-speech/). Once you obtained the key, please put it in `args/api.tsv`.
 
-
-## `pick_tokens`
-Please implement your own `pick_tokens` function in `src/todo.py`. This function is used to pick tokens for a generation time step given predicted token probability distribution. Many choices are available, e.g. greedy, top-k, top-p, or sampling.
+Finally, Please implement your own `pick_tokens` function in `src/todo.py`. This function is used to pick tokens for a generation time step given predicted token probability distribution. Many choices are available, e.g. greedy, top-k, top-p, or sampling.
 
 
 # Modules
