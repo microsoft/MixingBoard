@@ -1,6 +1,5 @@
 
 *.pyc
-args/api.tsv
 src/transformers/
 models/
 voice/
