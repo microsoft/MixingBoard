@@ -15,10 +15,11 @@
 We use the following unstructured free-text sources to retrieve relevant knowledge passage: search engine, specialized websites (e.g. wikipedia), and user provided document.
 ```
 python src/knowledge.py
+```
+The above command calls Bing search API and the following shows results of an example query.
+```
 QUERY:  what is deep learning?
-```
-E.g. the above command calls Bing search API and returns the following results
-```
+
 URL:    https://en.wikipedia.org/wiki/Deep_learning
 TXT:    Deep learning is a class of machine learning algorithms that (pp199–200) uses multiple layers to progressively extract higher level features from the raw input. For example, in image processing, lower layers may identify edges, while higher layers may identify the concepts relevant to a human such as digits or letters or faces.. Overview. Most modern deep learning models are based on ...
 
@@ -33,10 +34,10 @@ TXT:    Since deep-learning algorithms require a ton of data to learn from, this
 We use [DialoGPT](https://github.com/microsoft/DialoGPT) as an example.
 ```
 python src/open_dialog.py
+```
+The following shows DialoGPT (`DPT`) predictions of an example query using one implementation of the `pick_tokens` function.
+```
 CONTEXT:        What's your dream?
-```
-E.g. the above command calls DialoGPT model and returns the following results
-```
 DPT 1.008       First one is to be a professional footballer. Second one is to be a dad. Third one is to be a firefighter.
 DPT 1.007       First one is to be a professional footballer. Second one is to be a dad. Third one is to be a father of two.
 ...
@@ -45,21 +46,21 @@ DPT 1.007       First one is to be a professional footballer. Second one is to b
 ## Machine reading comprehension
 ```
 python src/mrc.py
+```
+The above command calls [BiDAF](https://allenai.github.io/bi-att-flow/) model. Given a passage from a [Wikipedia page](https://en.wikipedia.org/wiki/Geoffrey_Hinton) and an example query, it returns the following results
+```
 QUERY:          Who is Jeffrey Hinton?
 PASSAGE:        Geoffrey Everest Hinton CC FRS FRSC is an English Canadian cognitive psychologist and computer scientist, most noted for his work on artificial neural networks. Since 2013 he divides his time working for Google and the University of Toronto. In 2017, he cofounded and became the Chief Scientific Advisor of the Vector Institute in Toronto.
-```
-E.g. the above command calls [BiDAF](https://allenai.github.io/bi-att-flow/) model and returns the following results
-```
 Bidaf 0.352     an English Canadian cognitive psychologist and computer scientist
 ```
 
 ## Text-to-speech
 ```
 python src/tts.py
+```
+The above command calls [Microsoft Azure Text-to-Speech API](https://azure.microsoft.com/en-us/services/cognitive-services/text-to-speech/), saves and plays the audio. The following is one example.
+```
 TXT:    Hello there, welcome to the Mixing Board repo!
-```
-E.g. the above command calls [Microsoft Azure Text-to-Speech API](https://azure.microsoft.com/en-us/services/cognitive-services/text-to-speech/), saves and plays the audio.
-```
 audio saved to voice/hellotherewelcometothemixingboardrepo_en-US-JessaNeural.wav
 ```
 
@@ -95,7 +96,33 @@ The comand above creates a webpage demo that can be visited by typing `localhost
 ![](https://github.com/microsoft/MixingBoard/blob/master/fig/dialog_web_demo.PNG)
 
 ## RESTful API
-
+```
+python src/demo_dialog.py api
+```
+Runing the command above on your machine `A` (say its IP address is `IP_address_A`) starts hosting the models on machine `A`. Then, you can call this RESTful API on another machine, say machine `B`, with the following command, using "what is machine learning?" as an example context
+```
+curl IP_address_A:5000 -d "context=what is machine learning?" -X GET
+```
+which will returns a json object, in the following format
+```json
+{
+  "context": "what is machine learning?", 
+  "passages": [[
+      "https://en.wikipedia.org/wiki/Machine_learning", 
+      "Machine learning (ML) is the study of computer algorithms that improve automatically through experience. It is seen as a subset of artificial intelligence.Machine learning algorithms build a mathematical model based on sample data, known as \"training data\", in order to make predictions or decisions without being explicitly programmed to do so. Machine learning algorithms are used in a wide ...
+    "]], 
+  "responses": [
+    {
+      "rep": -0.0, "info": 0.4280192169639406, "fwd": 0.014708111993968487, "rvs": 0.10698941218944846, "score": 0.5497167508995263, "way": "Bidaf", 
+      "hyp": "computer algorithms that improve automatically through experience"}, 
+    {
+      "rep": -0.0, "info": 0.24637171873352778, "fwd": 0.16426260769367218, "rvs": 0.05065313921885011, "score": 0.46128747495542344, "way": "DPT", 
+      "hyp": "I believe that is a fancy way to say artificial intelligence."}, 
+    {
+      "rep": -0.1428571428571429, "info": 0.22310269295193919, "fwd": 0.1599835902452469, "rvs": 0.21712445686414383, "score": 0.4573535985050974, "way": "DPT", 
+      "hyp": "I believe that is a fancy way to put it. Machine learning is a set of algorithms and algorithms are machines."}, 
+  ]}
+```
 
 # Contributing
 
