@@ -4,8 +4,7 @@ from cmr.batcher import load_meta, prepare_batch_data
 from cmr.model import DocReaderModel
 import json, os, torch
 import numpy as np
-from _todo import pick_tokens
-import pdb
+from todo import pick_tokens
 
 
 class JsonConfig:

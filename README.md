@@ -20,8 +20,9 @@ sh setup.sh
 ```
 Depending on your operating system, download pretrained models with
 ```
+# if using Windows
 sh setup_win.sh
-# or
+# if using Linux
 sh setup_linux.sh
 ```
 
