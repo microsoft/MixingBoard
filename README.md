@@ -71,6 +71,18 @@ PASSAGE:        Geoffrey Everest Hinton CC FRS FRSC is an English Canadian cogni
 Bidaf 0.352     an English Canadian cognitive psychologist and computer scientist
 ```
 
+## Grounded generation
+We consider two document-grounded text generation algorithms:
+* [Conversing-by-Reading](https://github.com/qkaren/converse_reading_cmr), which aims to generate proper dialog response grounded on relevant document or text knowledge passage. It can be called with the command below
+```
+python src/grounded.py cmr
+```
+* [Content-Transfer](https://github.com/shrimai/Towards-Content-Transfer-through-Grounded-Text-Generation), which aims to generate proper sentences in a given document context given another relevant document or text knowledge passage. It can be called with the command below
+```
+python src/grounded.py ct
+```
+
+
 ## Text-to-speech
 ```
 python src/tts.py

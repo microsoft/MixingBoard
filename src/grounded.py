@@ -107,4 +107,5 @@ def play_grounded(which):
 
 
 if __name__ == "__main__":
-    play_grounded('cmr')
+    import sys
+    play_grounded(sys.argv[1])
