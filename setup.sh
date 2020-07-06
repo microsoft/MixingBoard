@@ -19,14 +19,3 @@ mkdir temp
 wget https://github.com/huggingface/transformers/archive/4d45654.zip -O temp/transformers.zip
 tar -xf temp/transformers.zip -C temp
 move temp/transformers-4d456542e9d381090f9a00b2bcc5a4cb07f6f3f7/transformers src/transformers
-
-# download the pretrained models ====
-
-# DialoGPT forward and reverse model 
-mkdir models/DialoGPT
-wget https://convaisharables.blob.core.windows.net/lsp/multiref/medium_ft.pkl -O models/DialoGPT/medium_ft.pkl
-wget https://convaisharables.blob.core.windows.net/lsp/multiref/small_reverse.pkl -O models/DialoGPT/small_reverse.pkl
-
-# BiDAF model 
-mkdir models/BiDAF
-wget https://storage.googleapis.com/allennlp-public-models/bidaf-model-2020.03.19.tar.gz -O models/BiDAF/bidaf-model-2020.03.19.tar.gz

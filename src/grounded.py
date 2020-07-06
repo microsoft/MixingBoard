@@ -5,6 +5,7 @@ from cmr.model import DocReaderModel
 import json, os, torch
 import numpy as np
 from _todo import pick_tokens
+import pdb
 
 
 class JsonConfig:
@@ -15,6 +16,8 @@ class JsonConfig:
 
 
 class ConversingByReading:
+    # ref: https://github.com/qkaren/converse_reading_cmr
+
     def __init__(self, use_cuda=True):
         args = JsonConfig('models/cmr/args.json')
         self.embedding, self.opt, self.vocab = load_meta(vars(args), args.meta)
@@ -90,9 +93,52 @@ class ConversingByReading:
         return fea_dict
 
 
+class OptionContentTransfer:
+    def __init__(self):
+        self.path_model = 'models/crg/crg_model.pt'
+        self.path_tokenizer = 'models/crg/bpeM.model'
+        self.beam_size = 5
+        self.batch_size = 1
+        self.max_sent_length = 100
+        self.replace_unk = True
+        self.verbose = False
+        self.n_best = 1
+        self.cuda = True
+
+
+import onmt
+class ContentTransfer:
+    # ref: https://github.com/shrimai/Towards-Content-Transfer-through-Grounded-Text-Generation
+
+    def __init__(self):
+        import sentencepiece as spm
+        opt = OptionContentTransfer()
+        self.model = onmt.Translator(opt)
+        self.tokenizer = spm.SentencePieceProcessor()
+        self.tokenizer.load(opt.path_tokenizer)
+
+    def encode(self, s):
+        return ' '.join(self.tokenizer.EncodeAsPieces(s.lower()))
+
+    def decode(self, s):
+        return self.tokenizer.DecodePieces(s).replace(chr(92),' ')
+
+    def predict(self, query, passage, min_score_article=0.3, min_score_passage=0.1, verbose=False):
+        cxt = self.encode(query)
+        src = self.encode(passage)
+        srcBatch = [src.split()]
+        cxtBatch = [cxt.split()]
+        hyp, _, _ = self.model.translate(srcBatch, cxtBatch, None)
+        hyp = self.decode(hyp[0][0]).split('|')[0].strip()
+        return [('CT', 0, hyp)]
+
+
+        
 def play_grounded(which):
     if which == 'cmr':
         model = ConversingByReading()
+    elif which == 'ct':
+        model = ContentTransfer()
 
     while True:
         cxt = input('\nCONTEXT:\t')

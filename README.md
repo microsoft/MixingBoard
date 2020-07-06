@@ -14,9 +14,15 @@ Firstly, create an environment with Python 3.6
 conda create -n mixingboard python=3.6
 conda activate mixingboard
 ```
-Then, install Python packages and download pretrained models with
+Then, install Python packages with
 ```
 sh setup.sh
+```
+Depending on your operating system, download pretrained models with
+```
+sh setup_win.sh
+# or
+sh setup_linux.sh
 ```
 
 Then, if you prefer to use the web search and text-to-speech functions, please apply the following accounts.
