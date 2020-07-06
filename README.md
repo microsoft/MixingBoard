@@ -18,7 +18,7 @@ Then, install Python packages with
 ```
 sh setup.sh
 ```
-Depending on your operating system, download pretrained models with
+Then, depending on your operating system, download pretrained models with
 ```
 # if using Windows
 sh setup_win.sh
@@ -26,7 +26,7 @@ sh setup_win.sh
 sh setup_linux.sh
 ```
 
-Then, if you prefer to use the web search and text-to-speech functions, please apply the following accounts.
+If you prefer to use the web search and text-to-speech functions, please apply the following accounts.
 * **Bing Search API**: open an account and/or try for free on [Azure Cognitive Services](https://azure.microsoft.com/en-us/services/cognitive-services/bing-web-search-api/). Once you obtained the key, please put it in `args/api.tsv`. You can also try other search engine, however we currently only support Bing Search v7.0 in `src/knowledge.py`.
 * **Text-to-Speech**: open an account and/or try for free on [Azure Cognitive Services](https://azure.microsoft.com/en-us/services/cognitive-services/text-to-speech/). Once you obtained the key, please put it in `args/api.tsv`.
 
@@ -62,8 +62,22 @@ python src/open_dialog.py
 The following shows DialoGPT (`DPT`) predictions of an example query using one implementation of the `pick_tokens` function.
 ```
 CONTEXT:        What's your dream?
-DPT 1.008       First one is to be a professional footballer. Second one is to be a dad. Third one is to be a firefighter.
-DPT 1.007       First one is to be a professional footballer. Second one is to be a dad. Third one is to be a father of two.
+DPT 0.198       First one is to be a professional footballer. Second one is to be a dad. Third one is to be a father of a second son.
+DPT 0.198       First one is to be a professional footballer. Second one is to be a dad. Third one is to be a father of two.
+...
+```
+
+## Generation with language model
+We use [GPT-2](https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf) as an example.
+```
+python src/lm.py
+```
+The following shows GPT-2 predictions of an example query using one implementation of the `pick_tokens` function.
+```
+CONTEXT:        Deep learning and Natural Language Processing are
+GPT2 0.128      not to be relied on in everyday life.  The good news is, with a little practice, you'll be able to master them.
+GPT2 0.101      not to be relied on in everyday life.  The good news is, with a little practice, you'll be able to master them quickly
+GPT2 0.096      not to be relied on in everyday life.  The good news is, with a little practice, you will be able to solve complex problem
 ...
 ```
 

@@ -219,8 +219,7 @@ class DialoGPT:
 
         finished = sorted(finished, reverse=True)
         ret = []
-        for _sum_logP, seq in finished:
-            prob = np.exp(_sum_logP/len(seq))
+        for prob, seq in finished:
             hyp = self.tokenizer.decode(seq).strip()
             ret.append((way, prob, hyp))
             if len(ret) == beam:
