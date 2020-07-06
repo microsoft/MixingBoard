@@ -178,6 +178,48 @@ Besides calling API by `curl`, you can also lanch a webpage demo on machine `B`,
 python src/demo_dialog.py web --remote=IP_address_A:5000 --port=5001
 ```
 
+# Document generation Demo
+
+## Comand-line interface
+The comand-line interface can be started with the following command.
+```
+python src/demo_dialog.py cmd
+```
+## Webpage interface
+```
+python src/demo_doc_gen.py web
+```
+The comand above creates a webpage demo that can be visited by typing `localhost:5000` in your browser. You can interact with the models, and the following screenshot is an example
+![](https://github.com/microsoft/MixingBoard/blob/master/fig/doc_web_demo.PNG)
+
+## RESTful API
+```
+python src/demo_doc_gen.py api
+```
+Runing the command above on your machine `A` (say its IP address is `IP_address_A`) starts to host the models on machine `A` with a RESTful API. Similar to the Dialog Demo, you can use `curl` to call this backend from another machine
+```
+curl IP_address_A:5000 -d "context=Deep learning is" -X GET
+```
+which will returns a json object, in the following format
+```json
+{
+  "context": "Deep learning is", 
+  "passages": [[
+      "https://en.wikipedia.org/wiki/Deep_learning", 
+      "Deep learning is a class of machine learning algorithms that (pp199\u2013200) uses multiple layers to progressively extract higher level features from the raw input. For example, in image processing, lower layers may identify edges, while higher layers may identify the concepts relevant to a human such as digits or letters or faces.. Overview. Most modern deep learning models are based on ..."
+    ]], 
+  "responses": [
+    {
+      "rep": -0.07407407407407407, "info": 0.36715887127947433, "fwd": 0.06162497028708458, "score": 0.35470977305382584, "way": "GPT2", 
+      "hyp": "particularly exciting at work because it allows anyone with a background in machine learning or machine learning algorithms to solve real-world problems using artificial neural networks,"
+    }
+  ]}
+```
+or using the model hosted on machine `A` as backend of a webpage demo hosted on machine `B` using the following command
+```
+python src/demo_doc_gen.py web --remote=IP_address_A:5000 --port=5001
+```
+
 # Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a

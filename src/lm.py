@@ -91,6 +91,69 @@ class LanguageModel:
         return sorted(ret, reverse=True)
 
 
+
+    def tf_prob(self, context, hyps, batch=10, return_np=True):
+        if isinstance(hyps, str):
+            hyps = [hyps]
+        i0 = 0
+        prob = []
+        while i0 < len(hyps):
+            i1 = min(i0 + batch, len(hyps))
+            with torch.no_grad():
+                prob.append(self._tf_prob(context, hyps[i0:i1]))
+            i0 = i1
+        if len(prob) > 1:
+            prob = torch.cat(prob, dim=0)
+        else:
+            prob = prob[0]
+        if return_np:
+            if self.use_cuda:
+                prob = prob.cpu()
+            return prob.detach().numpy()
+        else:
+            return prob
+            
+
+    def _tf_prob(self, context, hyps):
+        # converted what's from tokenizer.encode to what's should be used in logits
+        enc2pred = {}
+        ids_cxt = self.tokenizer.encode(context)
+        ids_hyp = []
+        hyp_len = []
+        for hyp in hyps:
+            raw_hyp_tokens = self.tokenizer.encode(hyp)
+            hyp_tokens = []
+            for token in raw_hyp_tokens:
+                hyp_tokens.append(enc2pred.get(token, token))
+            ids_hyp.append(hyp_tokens)
+            hyp_len.append(len(hyp_tokens))
+        
+        max_len = max(hyp_len)
+        ids = []
+        mask = []
+        for i, seq in enumerate(ids_hyp):
+            cat = ids_cxt + seq + [self.ix_EOS] * (max_len - hyp_len[i])
+            ids.append(cat)
+            mask.append([1] * hyp_len[i] + [0] * (max_len - hyp_len[i]))
+        ids = torch.tensor(ids)
+        mask = torch.FloatTensor(mask)
+        hyp_len = torch.FloatTensor(hyp_len)
+        if self.use_cuda:
+            ids = ids.to('cuda')
+            mask = mask.to('cuda')
+            hyp_len = hyp_len.to('cuda')
+        
+        l_cxt = len(ids_cxt)
+        with torch.no_grad():
+            logits, _ = self.model(ids)
+            logits = logits[:, l_cxt - 1: -1, :]     # only care the part after cxt. ignore -1.
+            logP = torch.log(F.softmax(logits, dim=-1))
+
+        logP_ids = logP.gather(dim=-1, index=ids[:,l_cxt:].unsqueeze(-1)).squeeze(-1)
+        avg_logP = (logP_ids * mask).sum(dim=-1) / hyp_len
+        return torch.exp(avg_logP)
+
+
 def play_lm():
     lm = LanguageModel()
     while True:

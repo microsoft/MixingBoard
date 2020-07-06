@@ -61,9 +61,6 @@ class DialoGPT:
         ids_hyp = []
         hyp_len = []
         for hyp in hyps:
-            hyp = (' ' + hyp + ' ').replace(' i ',' I ')
-            hyp = hyp.strip().replace(" '","'")
-            hyp = hyp[0].upper() + hyp[1:]
             raw_hyp_tokens = self.tokenizer.encode(hyp)
             
             # if not use_EOS, then hyps are some incomplete hyps, as in decoding with cross-model scoring

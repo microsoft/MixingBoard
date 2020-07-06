@@ -1,0 +1,85 @@
+<!--// Copyright (c) Microsoft Corporation.// Licensed under the MIT license. -->
+
+<head>
+    <title>Document generation demo</title>
+</head>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+    
+table {
+        border: 1px solid #adadaa;
+      border-collapse: collapse;
+    }
+    
+    th, td {
+      text-align: left;
+      padding: 4px;
+    }
+* {
+  box-sizing: border-box;
+}
+
+tr:nth-child(odd) {background-color: #f0f0f0;}
+
+</style>
+</head>
+<body>
+
+    
+<h2>Document generation demo</h2>
+
+<h3>Input</h3>
+<form method="POST">
+    <textarea name='inp_cxt' rows="3" cols="60">{{ cxt_val }}</textarea><br>
+<br><input type="submit" value="Send"></p>
+</form>
+
+
+
+  </div>
+  <div class="column">      
+
+    <h3>Suggestion</h3>
+    {% for v in notes %}
+        {{ v }}<br>
+    {% endfor %}
+
+    <table border="0" width="100%">
+    <tr>
+        {% for s in score_header %}
+            <td><b>{{ s }}</b></td>
+        {% endfor %}
+        <td><b>model</b></td>
+        <td><b>candidate</b></td>
+        <td></td>
+    </tr>
+    {% for score, model, hyp, hyp_en in hyps %}
+        <tr>
+            {% for v in score %}
+                <td>{{ v }}</td>
+            {% endfor %}
+            <td>{{ model }}</td>
+            <td>{{ hyp }}</td>
+            <td>{{ hyp_en }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+
+    <h3>Retrieved Passage:</h3>
+    <table border="0" width="100%">
+    {% for url_display, url_full, snippet in passages %}
+        <tr>
+        <td><a href={{ url_full }}>{{ url_display }}</a></td>
+        <td>{{ snippet }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+
+
+
+</body>
+</html>
