@@ -23,7 +23,7 @@ Then, if you prefer to use the web search and text-to-speech functions, please a
 * **Bing Search API**: open an account and/or try for free on [Azure Cognitive Services](https://azure.microsoft.com/en-us/services/cognitive-services/bing-web-search-api/). Once you obtained the key, please put it in `args/api.tsv`. You can also try other search engine, however we currently only support Bing Search v7.0 in `src/knowledge.py`.
 * **Text-to-Speech**: open an account and/or try for free on [Azure Cognitive Services](https://azure.microsoft.com/en-us/services/cognitive-services/text-to-speech/). Once you obtained the key, please put it in `args/api.tsv`.
 
-Finally, Please implement your own `pick_tokens` function in `src/todo.py`. This function is used to pick tokens for a generation time step given predicted token probability distribution. Many choices are available, e.g. greedy, top-k, top-p, or sampling.
+Finally, Please implement your own `pick_tokens` function in `src/todo.py` (see [Disclaimer](#Disclaimer)). This function is used to pick tokens for a generation time step given predicted token probability distribution. Many choices are available, e.g. greedy, top-k, top-p, or sampling.
 
 
 # Modules
@@ -172,6 +172,8 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
 # Disclaimer
+MixingBoard is mainly released as a platform that helps developers build demos with a focus on knowledge grounded stylized text generation, and is not meant as an end-to-end system on its own. The responsibility of decoder implementation resides with the developer, and the developer needs to implement the method `pick_token` in `MixingBoard/src/todo.py` to have a workable system.  Despite our efforts to minimize the amount of overtly offensive data in our processing pipelines, models made available with MixingBoard retain the potential of generating output that may trigger offense. Output may reflect gender and other biases implicit in the data. Responses created using these models may exhibit a tendency to agree with propositions that are unethical, biased, or offensive (or conversely, disagreeing with otherwise ethical statements). These are known issues in current state-of-the-art end-to-end conversation models trained on large, naturally occurring datasets. In no case should inappropriate content generated as a result of using MixingBoard be interpreted as reflecting the views or values of either the authors or Microsoft Corp.
+
 
 # Citation
 
