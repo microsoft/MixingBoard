@@ -7,6 +7,7 @@ from mrc import BidafQA
 import base64
 from flask import Flask, request, render_template
 from open_dialog import DialoGPT
+from grounded import ConversingByReading
 from flask_restful import Resource, Api
 from tts import TextToSpeech
 from ranker import Ranker
@@ -30,6 +31,7 @@ class DialogBackendLocal(DialogBackend):
         super().__init__()
         
         self.model_mrc = BidafQA()
+        self.model_cmr = ConversingByReading()
         self.model_open = DialoGPT()
         self.kb = KnowledgeBase()
         model_mmi = DialoGPT(path_model='models/DialoGPT/small_reverse.pkl')
@@ -37,10 +39,8 @@ class DialogBackendLocal(DialogBackend):
         self.local = True
 
 
-    def predict(self, context, max_n=3):
+    def predict(self, context, max_n=-1):
 
-        t0 = time.time()
-        time_info = 'start\t%.1f\n'%t0
         context, query = self.history2inp(context)
         print('backend running, context = %s'%context)
 
@@ -57,9 +57,8 @@ class DialogBackendLocal(DialogBackend):
             passages.append((passage, query))
 
         for passage, kb_query in passages:
-            ret_mrc = self.model_mrc.predict(kb_query, passage)
-            results += ret_mrc
-            time_info += 'mrc\t%.1f\n'%(time.time() - t0)
+            results += self.model_mrc.predict(kb_query, passage)
+            results += self.model_cmr.predict(kb_query, passage)
 
         # rank hyps from different models
 
@@ -69,7 +68,9 @@ class DialogBackendLocal(DialogBackend):
         for i, d in enumerate(scored):
             d['way'], _, d['hyp'] = results[i]
             ret.append((d['score'], d))
-        ranked = [d for _, d in sorted(ret, reverse=True)][:min(len(ret), max_n)]
+        ranked = [d for _, d in sorted(ret, reverse=True)]
+        if max_n > 0:
+            ranked = ranked[:min(len(ranked), max_n)]
         return ranked, url_snippet
         
 
