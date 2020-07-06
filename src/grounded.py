@@ -1,3 +1,4 @@
+#// Copyright (c) Microsoft Corporation.// Licensed under the MIT license. 
 
 from cmr.process_raw_data import filter_query, filter_fact
 from cmr.batcher import load_meta, prepare_batch_data

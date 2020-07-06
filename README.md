@@ -103,7 +103,6 @@ python src/grounded.py cmr
 python src/grounded.py ct
 ```
 
-
 ## Text-to-speech
 ```
 python src/tts.py
@@ -130,6 +129,9 @@ rep -0.1429 info 0.2518 score 0.1089
 TXT:    This is a informative sentence from the MixingBoard GitHub repo.
 rep -0.0000 info 0.4416 score 0.4416
 ```
+
+## Coming soon
+the modules for stylization, constrained generation and cross-model integration will be available soon in this repo.
 
 # Dialog Demo
 
