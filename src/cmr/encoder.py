@@ -96,7 +96,7 @@ class LexiconEncoder(nn.Module):
 
     def patch(self, v):
         if self.opt['cuda']:
-            v = Variable(v.cuda(async=True))
+            v = Variable(v.cuda())
         else:
             v = Variable(v)
         return v
